@@ -1,7 +1,5 @@
 ﻿using Catalogo.Application.DTOs;
-using Catalogo.Application.Services;
 using Catalogo.Application.Services.Interfaces;
-using Catalogo.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -17,6 +15,7 @@ public class ProdutoController : Controller
     {
         _produtoService = produtoService;
     }
+
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
