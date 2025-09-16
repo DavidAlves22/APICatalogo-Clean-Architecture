@@ -8,6 +8,8 @@ using System.Net;
 
 namespace Catalogo.API.Controllers;
 
+[Route("api/[controller]")]
+[ApiController]
 public class ProdutoController : Controller
 {
     private readonly IProdutoService _produtoService;
@@ -16,7 +18,6 @@ public class ProdutoController : Controller
         _produtoService = produtoService;
     }
 
-    [Authorize]
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
