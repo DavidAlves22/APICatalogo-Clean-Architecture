@@ -1,6 +1,7 @@
 ﻿using Catalogo.Application.DTOs;
 using Catalogo.Application.Services.Interfaces;
 using Catalogo.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -16,6 +17,7 @@ public class CategoriaController : ControllerBase
         _categoriaService = categoriaService;
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetAsync()
     {

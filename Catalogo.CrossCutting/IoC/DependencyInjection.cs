@@ -25,6 +25,9 @@ public static class DependencyInjection
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IAuthRepository, AuthRepository>();
+
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
         services.AddScoped<ICategoriaService, CategoriaService>();
