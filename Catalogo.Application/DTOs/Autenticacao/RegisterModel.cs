@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Catalogo.Application.DTOs.Autenticacao
+namespace Catalogo.Application.DTOs.Autenticacao;
+
+public class RegisterModel
 {
-    public class RegisterModel
-    {
-        [Required(ErrorMessage = "O campo UserName é obrigatório.")]
-        public string? UserName { get; set; }
+    [Required(ErrorMessage = "O campo UserName é obrigatório.")]
+    public string UserName { get; set; }
 
-        [EmailAddress]
-        public string? Email { get; set; }
+    [Required(ErrorMessage = "O campo Email é obrigatório.")]
+    [EmailAddress]
+    public string Email { get; set; }
 
-        [Required(ErrorMessage = "O campo Password é obrigatório.")]
-        public string? Password { get; set; }
-    }
+    [Required(ErrorMessage = "O campo Password é obrigatório.")]
+    public string Password { get; set; }
 }

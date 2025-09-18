@@ -10,9 +10,9 @@ namespace Catalogo.Application.DTOs.Autenticacao
     public class LoginModel
     {
         [Required(ErrorMessage = "O campo UserName é obrigatório.")]
-        public string? UserName { get; set; }
+        public string UserName { get; set; }
 
         [Required(ErrorMessage = "O campo Password é obrigatório.")]
-        public string? Password { get; set; }
+        public string Password { get; set; }
     }
 }

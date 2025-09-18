@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Catalogo.Application.DTOs.Autenticacao;
 
-namespace Catalogo.Application.DTOs.Autenticacao
+public class LoginRetornoDTO : RetornoDTO
 {
-    public class LoginRetornoDTO
-    {
-        public string Token { get; set; }
-        public string RefreshToken { get; set; }
-        public DateTime Expiration { get; set; }
-    }
+    public string Token { get; set; }
+    public string RefreshToken { get; set; }
+    public DateTime Expiration { get; set; }
 }

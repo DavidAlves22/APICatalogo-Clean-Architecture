@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Catalogo.Application.DTOs.Autenticacao
+namespace Catalogo.Application.DTOs.Autenticacao;
+
+public class TokenModel
 {
-    public class TokenModel
-    {
-        public string? AccessToken { get; set; }
-        public string? RefreshToken { get; set; }
-    }
+    [Required(ErrorMessage = "Necessário informar o Token")]
+    public string AccessToken { get; set; }
+
+    [Required(ErrorMessage = "Necessário informar o Refresh Token")]
+    public string RefreshToken { get; set; }
 }
