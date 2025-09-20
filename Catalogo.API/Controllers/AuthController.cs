@@ -15,7 +15,6 @@ public class AuthController : Controller
         _authService = authService;
     }
 
-    [AllowAnonymous]
     [HttpPost]
     [Route("login")]
     public async Task<IActionResult> Login([FromBody] LoginModel model)
@@ -28,7 +27,6 @@ public class AuthController : Controller
         return Unauthorized();
     }
 
-    [AllowAnonymous]
     [HttpPost]
     [Route("register")]
     public async Task<IActionResult> Register([FromBody] RegisterModel model)
@@ -48,7 +46,6 @@ public class AuthController : Controller
         }
     }
 
-    [AllowAnonymous]
     [HttpPost]
     [Route("refresh-token")]
     [ApiExplorerSettings(IgnoreApi = true)] // Não exibe a rota no swagger
@@ -72,8 +69,8 @@ public class AuthController : Controller
         }
     }
 
-    [Authorize]
     [HttpPost]
+    [Authorize(Policy = "SuperAdminOnly")]
     [Route("revoke/{username}")]
     public async Task<IActionResult> Revoke(string username)
     {

@@ -1,5 +1,6 @@
 ﻿using Catalogo.Application.DTOs;
 using Catalogo.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -7,6 +8,7 @@ namespace Catalogo.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class ProdutoController : Controller
 {
     private readonly IProdutoService _produtoService;
