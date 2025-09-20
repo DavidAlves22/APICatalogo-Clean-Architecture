@@ -12,6 +12,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddConfiguracoesIniciais(builder.Configuration);
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 

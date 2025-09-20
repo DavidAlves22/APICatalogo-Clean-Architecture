@@ -37,6 +37,7 @@ public static class DependencyInjection
         services.AddScoped<IProdutoRepository, ProdutoRepository>();
 
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<ICacheService, CacheService>();
 
         MapsterConfig.ConfigurarMapeamento();
         services.AddMapster();

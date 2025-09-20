@@ -1,6 +1,5 @@
 ﻿using Catalogo.Application.DTOs;
 using Catalogo.Application.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -64,7 +63,7 @@ public class ProdutoController : Controller
 
         var produtoCriado = await _produtoService.Create(produtoDTO);
 
-        return new CreatedAtRouteResult("Post", new { id = produtoCriado.Id }, produtoCriado);
+        return Ok(produtoCriado);
     }
 
     [HttpPut]

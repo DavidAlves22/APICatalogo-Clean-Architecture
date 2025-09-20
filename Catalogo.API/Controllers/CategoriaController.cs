@@ -17,7 +17,6 @@ public class CategoriaController : ControllerBase
         _categoriaService = categoriaService;
     }
 
-    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetAsync()
     {
@@ -62,7 +61,7 @@ public class CategoriaController : ControllerBase
 
         var categoria = await _categoriaService.Create(categoriaDTO);
 
-        return new CreatedAtRouteResult("Post", new { id = categoria.Id }, categoria);
+        return Ok(categoria);
     }
 
     [ProducesResponseType(StatusCodes.Status200OK)]
