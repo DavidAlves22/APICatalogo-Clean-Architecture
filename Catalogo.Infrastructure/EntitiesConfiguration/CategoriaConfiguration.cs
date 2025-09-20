@@ -11,5 +11,6 @@ public class CategoriaConfiguration : IEntityTypeConfiguration<Categoria>
         builder.HasKey(c => c.Id);
         builder.Property(c => c.Nome).IsRequired().HasMaxLength(80);
         builder.Property(c => c.ImagemUrl).IsRequired().HasMaxLength(300);
+        builder.Property(c => c.DataCadastro).IsRequired();
     }
 }

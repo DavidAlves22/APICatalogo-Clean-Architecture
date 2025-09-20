@@ -2,7 +2,7 @@
 
 public class Role
 {
-    public string Id { get; private set; } = Guid.NewGuid().ToString();
+    public string Id { get; private set; }
     public string Name { get; private set; }
 
     public Role(string name)

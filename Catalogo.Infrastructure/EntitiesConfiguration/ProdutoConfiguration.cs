@@ -14,7 +14,7 @@ public class ProdutoConfiguration : IEntityTypeConfiguration<Produto>
         builder.Property(p => p.Preco).IsRequired().HasPrecision(10, 2);
         builder.Property(p => p.ImagemUrl).IsRequired().HasMaxLength(300);
         builder.Property(p => p.Estoque).IsRequired().HasDefaultValue(1);
-        builder.Property(p => p.DataCadastro).IsRequired().HasDefaultValueSql("GETDATE()");
+        builder.Property(p => p.DataCadastro).IsRequired();
 
         builder.HasOne(e => e.Categoria).WithMany(e => e.Produtos).HasForeignKey(p => p.CategoriaId);
     }

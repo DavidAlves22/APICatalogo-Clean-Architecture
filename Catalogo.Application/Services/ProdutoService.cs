@@ -34,6 +34,7 @@ public class ProdutoService : IProdutoService
     public async Task<ProdutoDTO> Create(ProdutoDTO produtoDTO)
     {
         var produto = _mapper.Map<Produto>(produtoDTO);
+        produto.DataCadastro = DateTime.UtcNow;
         var produtoCriado = _unitOfWork.ProdutoRepository.Create(produto);
         await _unitOfWork.CommitAsync();
 

@@ -52,6 +52,7 @@ namespace Catalogo.Application.Services
         {
             categoriaDTO.Id = 0;
             var categoria = _mapper.Map<Categoria>(categoriaDTO);
+            categoria.DataCadastro = DateTime.UtcNow;
             var categoriaCriada = _unitOfWork.CategoriaRepository.Create(categoria);
             await _unitOfWork.CommitAsync();
 
