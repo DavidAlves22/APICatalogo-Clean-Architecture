@@ -1,4 +1,4 @@
-Versão evoluída da API de catálogo, implementada seguindo o padrão Clean Architecture, com separação clara de responsabilidades entre as camadas.
+Versão evoluída da API de catálogo (disponível em https://github.com/DavidAlves22/APICatalogo), implementada seguindo o padrão Clean Architecture, com separação clara de responsabilidades entre as camadas.
 Esse projeto mostra a evolução da API original, trazendo maior escalabilidade, testabilidade e manutenção do código.
 
 Tecnologias utilizadas:
