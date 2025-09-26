@@ -2,16 +2,6 @@
 {
     public sealed class Produto : Entity
     {
-        public Produto(string nome, string descricao, decimal preco, string imagemUrl, int estoque, DateTime dataCadastro)
-        {
-            Nome = nome;
-            Descricao = descricao;
-            Preco = preco;
-            ImagemUrl = imagemUrl;
-            Estoque = estoque;
-            DataCadastro = dataCadastro;
-        }
-
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public decimal Preco { get; set; }
