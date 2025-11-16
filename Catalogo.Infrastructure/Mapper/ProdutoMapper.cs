@@ -7,7 +7,7 @@ namespace Catalogo.Infrastructure.Mapper
     {
         public static Produto ToDomain(this ProdutoModel produto)
         {
-            return new Produto(produto.Id, produto.Nome, produto.Descricao, produto.Preco, produto.ImagemUrl, produto.Estoque, produto.DataCadastro, produto.CategoriaId);
+            return new Produto(produto.Id, produto.Nome, produto.Descricao, produto.Preco, produto.ImagemUrl, produto.Estoque, produto.CategoriaId);
         }
 
         public static ProdutoModel ToModel(this Produto produto)

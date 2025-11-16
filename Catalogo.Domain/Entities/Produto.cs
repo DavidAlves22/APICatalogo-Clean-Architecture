@@ -11,7 +11,7 @@
         public int CategoriaId { get; private set; }
         public Categoria Categoria { get; private set; }
 
-        public Produto(int id, string nome, string descricao, decimal preco, string imagemUrl, int estoque, DateTime dataCadastro, int categoriaId)
+        public Produto(int id, string nome, string descricao, decimal preco, string imagemUrl, int estoque, int categoriaId)
         {
             Id = id;
             Nome = nome;
@@ -21,6 +21,30 @@
             Estoque = estoque;
             DataCadastro = DateTime.UtcNow;
             CategoriaId = categoriaId;
+        }
+
+        public void AdicionarEstoque(int quantidade)
+        {
+            if (quantidade <= 0)
+                throw new ArgumentException("Quantidade deve ser maior que zero.");
+
+            Estoque += quantidade;
+        }
+
+        public void RemoverEstoque(int quantidade)
+        {
+            if (quantidade <= 0)
+                throw new ArgumentException("Quantidade deve ser maior que zero.");
+
+            Estoque -= quantidade;
+        }
+
+        public void AtualizarCategoria(int novaCategoriaId)
+        {
+            if(novaCategoriaId <= 0)
+                throw new ArgumentException("CategoriaId deve ser maior que zero.");
+
+            CategoriaId = novaCategoriaId;
         }
     }
 }

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalogo.API", "Catalogo.AP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalogo.CrossCutting", "Catalogo.CrossCutting\Catalogo.CrossCutting.csproj", "{80F1F35C-32CF-1F95-67EF-ADB161B5B433}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalogo.xUnitTests", "Catalogo.xUnitTests\Catalogo.xUnitTests.csproj", "{369352D1-B09D-4F20-BFBE-4F1CF93823AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{80F1F35C-32CF-1F95-67EF-ADB161B5B433}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80F1F35C-32CF-1F95-67EF-ADB161B5B433}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80F1F35C-32CF-1F95-67EF-ADB161B5B433}.Release|Any CPU.Build.0 = Release|Any CPU
+		{369352D1-B09D-4F20-BFBE-4F1CF93823AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{369352D1-B09D-4F20-BFBE-4F1CF93823AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{369352D1-B09D-4F20-BFBE-4F1CF93823AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{369352D1-B09D-4F20-BFBE-4F1CF93823AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
