@@ -1,4 +1,5 @@
-﻿using Catalogo.Domain.Interfaces;
+﻿using Catalogo.Application.Repositories;
+using Catalogo.Domain.Interfaces;
 using Catalogo.Infrastructure.Context;
 
 namespace Catalogo.Infrastructure.Repositories;

@@ -1,5 +1,5 @@
-﻿using Catalogo.Domain.Entities;
-using Catalogo.Infrastructure.Identity;
+﻿using Catalogo.Infrastructure.Identity;
+using Catalogo.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,8 +11,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
     }
 
-    public DbSet<Produto> Produtos { get; set; }
-    public DbSet<Categoria> Categorias { get; set; }
+    public DbSet<ProdutoModel> Produtos { get; set; }
+    public DbSet<CategoriaModel> Categorias { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

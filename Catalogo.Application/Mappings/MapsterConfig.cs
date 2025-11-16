@@ -10,7 +10,7 @@ public class MapsterConfig
     {
         TypeAdapterConfig.GlobalSettings.Default.NameMatchingStrategy(NameMatchingStrategy.FromCamelCase);
 
-        TypeAdapterConfig<Produto, ProdutoDTO>.NewConfig().TwoWays()
+        TypeAdapterConfig<Produto, ProdutoDTO>.NewConfig()
             .Map(dest => dest.Id, src => src.Id)
             .Map(dest => dest.Nome, src => src.Nome)
             .Map(dest => dest.Descricao, src => src.Descricao)

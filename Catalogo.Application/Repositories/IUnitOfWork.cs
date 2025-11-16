@@ -1,4 +1,6 @@
-﻿namespace Catalogo.Domain.Interfaces;
+﻿using Catalogo.Application.Repositories;
+
+namespace Catalogo.Domain.Interfaces;
 
 public interface IUnitOfWork
 {

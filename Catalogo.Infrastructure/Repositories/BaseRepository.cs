@@ -4,43 +4,54 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalogo.Infrastructure.Repositories
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : class
+    public class BaseRepository<TEntity, TModel> : IBaseRepository<TEntity, TModel> 
+        where TEntity : class
+        where TModel : class
     {
         protected readonly ApplicationDbContext _context;
+        private readonly Func<TModel, TEntity> _toDomain;
+        private readonly Func<TEntity, TModel> _toModel;
 
-        public BaseRepository(ApplicationDbContext context)
+        public BaseRepository(ApplicationDbContext context, Func<TEntity, TModel> toModel, Func<TModel, TEntity> toDomain)
         {
             _context = context;
+            _toModel = toModel;
+            _toDomain = toDomain;
         }
 
-        public async Task<IEnumerable<T>> GetAsync()
+        public async Task<IEnumerable<TEntity>> GetAsync()
         {
-            return await _context.Set<T>().AsNoTracking().ToListAsync();
+            var listaModel = await _context.Set<TModel>().AsNoTracking().ToListAsync();
+            return listaModel.Select(_toDomain).ToList();
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<TEntity?> GetByIdAsync(int id)
         {
-            return await _context.Set<T>().FindAsync(id);
+            var model = await _context.Set<TModel>().FindAsync(id);
+
+            return model == null ? null : _toDomain(model);
         }
 
-        public T Create(T objeto)
+        public TEntity Create(TEntity objeto)
         {
-            _context.Set<T>().Add(objeto);
+            var model = _toModel(objeto);
+            _context.Set<TModel>().Add(model);
             return objeto;
         }
 
-        public T Update(T objeto)
+        public TEntity Update(TEntity objeto)
         {
-            _context.Set<T>().Update(objeto);
+            var model = _toModel(objeto);
+            _context.Set<TModel>().Update(model);
             return objeto;
         }
 
         public void Remove(int id)
         {
-            var objeto = _context.Set<T>().Find(id);
+            var model = _context.Set<TModel>().Find(id);
 
-            if (objeto is not null)
-                _context.Set<T>().Remove(objeto);
+            if (model is not null)
+                _context.Set<TModel>().Remove(model);
         }
     }
 }

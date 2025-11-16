@@ -1,6 +1,6 @@
 ﻿using Catalogo.Application.DTOs;
+using Catalogo.Application.Mappings;
 using Catalogo.Application.Services.Interfaces;
-using Catalogo.Domain.Entities;
 using Catalogo.Domain.Interfaces;
 using MapsterMapper;
 
@@ -33,12 +33,11 @@ public class ProdutoService : IProdutoService
 
     public async Task<ProdutoDTO> Create(ProdutoDTO produtoDTO)
     {
-        var produto = _mapper.Map<Produto>(produtoDTO);
-        produto.DataCadastro = DateTime.UtcNow;
+        var produto = produtoDTO.ToDomain();
         var produtoCriado = _unitOfWork.ProdutoRepository.Create(produto);
         await _unitOfWork.CommitAsync();
 
-        return _mapper.Map<ProdutoDTO>(produtoCriado);
+        return produtoCriado.ToDTO();
     }
 
     public async Task<bool> Remove(int id)
@@ -51,10 +50,10 @@ public class ProdutoService : IProdutoService
 
     public async Task<ProdutoDTO> Update(ProdutoDTO produtoDTO)
     {
-        var produto = _mapper.Map<Produto>(produtoDTO);
+        var produto = produtoDTO.ToDomain();
         var produtoAtualizado = _unitOfWork.ProdutoRepository.Update(produto);
         await _unitOfWork.CommitAsync();
 
-        return _mapper.Map<ProdutoDTO>(produtoAtualizado);
+        return produtoAtualizado.ToDTO();
     }
 }

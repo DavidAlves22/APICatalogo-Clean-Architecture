@@ -1,4 +1,5 @@
 ﻿using Catalogo.Application.DTOs;
+using Catalogo.Application.Mappings;
 using Catalogo.Application.Services.Interfaces;
 using Catalogo.Domain.Entities;
 using Catalogo.Domain.Interfaces;
@@ -51,15 +52,14 @@ namespace Catalogo.Application.Services
         public async Task<CategoriaDTO> Create(CategoriaDTO categoriaDTO)
         {
             categoriaDTO.Id = 0;
-            var categoria = _mapper.Map<Categoria>(categoriaDTO);
-            categoria.DataCadastro = DateTime.UtcNow;
+            var categoria = categoriaDTO.ToDomain();
             var categoriaCriada = _unitOfWork.CategoriaRepository.Create(categoria);
             await _unitOfWork.CommitAsync();
 
             _cacheService.LimparCache(CATEGORIAS_CACHE_KEY);
             _cacheService.SetCache<CategoriaDTO>(_cacheService.GetCategoriasCacheKey(CATEGORIAS_CACHE_KEY, categoriaCriada.Id), categoriaDTO);
 
-            return _mapper.Map<CategoriaDTO>(categoriaCriada);
+            return categoriaCriada.ToDTO();
         }
 
         public async Task<bool> Remove(int id)
@@ -74,14 +74,14 @@ namespace Catalogo.Application.Services
 
         public async Task<CategoriaDTO> Update(CategoriaDTO categoriaDTO)
         {
-            var categoria = _mapper.Map<Categoria>(categoriaDTO);
+            var categoria = categoriaDTO.ToDomain();
             var categoriaAtualizada = _unitOfWork.CategoriaRepository.Update(categoria);
             await _unitOfWork.CommitAsync();
 
             _cacheService.LimparCache(CATEGORIAS_CACHE_KEY);
             _cacheService.SetCache<CategoriaDTO>(_cacheService.GetCategoriasCacheKey(CATEGORIAS_CACHE_KEY, categoriaAtualizada.Id), categoriaDTO);
 
-            return _mapper.Map<CategoriaDTO>(categoriaAtualizada);
+            return categoriaAtualizada.ToDTO();
         }
     }
 }
