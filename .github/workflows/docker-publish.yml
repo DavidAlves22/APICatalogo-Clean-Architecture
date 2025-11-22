@@ -1,0 +1,44 @@
+name: CI/CD Pipeline for Docker
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Setup .NET
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0'
+
+    # Restore dependencies
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # Build the project
+    - name: Build the project
+      run: dotnet build --configuration Release --no-restore
+
+    # Run tests
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal
+
+    # Build Docker image
+    - name: Build Docker image
+      run: docker build -t catalogo-api:latest .
+
+    # Run Docker container locally
+    - name: Run Docker container
+      run: docker run -d -p 5000:5000 --name catalogo-api catalogo-api:latest
