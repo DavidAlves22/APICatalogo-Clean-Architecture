@@ -14,15 +14,22 @@ namespace Catalogo.CrossCutting.IoC;
 
 public static class DependencyInjection
 {
+    public static IServiceCollection ConfigureDataBase(this IServiceCollection services, string connectionString)
+    {
+        services.AddDbContext<ApplicationDbContext>(optionsAction =>
+        {
+            optionsAction.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));                                                                                                 
+        });
+        return services;
+    }
+
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddEndpointsApiExplorer();
 
         var mySQLConnection = configuration.GetConnectionString("DefaultConnection");
-        services.AddDbContext<ApplicationDbContext>(optionsAction =>
-        {
-            optionsAction.UseMySql(mySQLConnection, ServerVersion.AutoDetect(mySQLConnection));                                                                                                 
-        });
+
+        ConfigureDataBase(services, mySQLConnection);
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
