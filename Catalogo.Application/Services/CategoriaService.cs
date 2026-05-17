@@ -1,7 +1,6 @@
-﻿using Catalogo.Application.DTOs;
+using Catalogo.Application.DTOs.Categoria;
 using Catalogo.Application.Mappings;
 using Catalogo.Application.Services.Interfaces;
-using Catalogo.Domain.Entities;
 using Catalogo.Domain.Interfaces;
 using MapsterMapper;
 
@@ -34,7 +33,7 @@ namespace Catalogo.Application.Services
             return categoriasDTO;
         }
 
-        public async Task<CategoriaDTO> GetById(int id)
+        public async Task<CategoriaDTO?> GetById(int id)
         {
             var categoriaCacheKey = _cacheService.GetCategoriasCacheKey(CATEGORIAS_CACHE_KEY, id);
 
@@ -42,6 +41,9 @@ namespace Catalogo.Application.Services
                 return categoriaCache;
 
             var categoria = await _unitOfWork.CategoriaRepository.GetByIdAsync(id);
+            if (categoria is null)
+                return null;
+
             var categoriaDTO = _mapper.Map<CategoriaDTO>(categoria);
 
             _cacheService.SetCache<CategoriaDTO>(categoriaCacheKey, categoriaDTO);
@@ -49,17 +51,18 @@ namespace Catalogo.Application.Services
             return categoriaDTO;
         }
 
-        public async Task<CategoriaDTO> Create(CategoriaDTO categoriaDTO)
+        public async Task<CategoriaDTO> Create(CategoriaCreateDTO categoriaDTO)
         {
-            categoriaDTO.Id = 0;
-            var categoria = categoriaDTO.ToDomain();
+            var categoria = categoriaDTO.CreateToDomain();
             var categoriaCriada = _unitOfWork.CategoriaRepository.Create(categoria);
             await _unitOfWork.CommitAsync();
 
-            _cacheService.LimparCache(CATEGORIAS_CACHE_KEY);
-            _cacheService.SetCache<CategoriaDTO>(_cacheService.GetCategoriasCacheKey(CATEGORIAS_CACHE_KEY, categoriaCriada.Id), categoriaDTO);
+            var dtoCriado = categoriaCriada.ToDTO();
 
-            return categoriaCriada.ToDTO();
+            _cacheService.LimparCache(CATEGORIAS_CACHE_KEY);
+            _cacheService.SetCache<CategoriaDTO>(_cacheService.GetCategoriasCacheKey(CATEGORIAS_CACHE_KEY, dtoCriado.Id), dtoCriado);
+
+            return dtoCriado;
         }
 
         public async Task<bool> Remove(int id)

@@ -1,4 +1,5 @@
-﻿using Catalogo.Application.DTOs;
+﻿using Catalogo.Application.DTOs.Categoria;
+using Catalogo.Application.DTOs.Produto;
 using Catalogo.Domain.Entities;
 using Mapster;
 

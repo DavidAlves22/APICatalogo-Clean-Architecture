@@ -1,4 +1,4 @@
-﻿using Catalogo.Application.DTOs;
+﻿using Catalogo.Application.DTOs.Produto;
 using Catalogo.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,9 +29,9 @@ public class ProdutoController : Controller
             var produtos = await _produtoService.GetProdutos();
             return Ok(produtos);
         }
-        catch
+        catch (Exception ex)
         {
-            throw;
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
         }
     }
 
@@ -53,7 +53,7 @@ public class ProdutoController : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult<ProdutoDTO>> PostAsync(ProdutoDTO produtoDTO)
+    public async Task<ActionResult<ProdutoDTO>> PostAsync(ProdutoCreateDTO produtoDTO)
     {
         if (produtoDTO is null)
             return BadRequest("Produto inválido");

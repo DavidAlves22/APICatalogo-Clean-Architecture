@@ -1,4 +1,4 @@
-﻿using Catalogo.Application.DTOs;
+using Catalogo.Application.DTOs.Produto;
 using Catalogo.Application.Mappings;
 using Catalogo.Application.Services.Interfaces;
 using Catalogo.Domain.Interfaces;
@@ -24,16 +24,18 @@ public class ProdutoService : IProdutoService
         return produtosDTO;
     }
 
-    public async Task<ProdutoDTO> GetById(int id)
+    public async Task<ProdutoDTO?> GetById(int id)
     {
         var produto = await _unitOfWork.ProdutoRepository.GetByIdAsync(id);
-        var produtoDTO = _mapper.Map<ProdutoDTO>(produto);
-        return produtoDTO;
+        if (produto is null)
+            return null;
+
+        return _mapper.Map<ProdutoDTO>(produto);
     }
 
-    public async Task<ProdutoDTO> Create(ProdutoDTO produtoDTO)
+    public async Task<ProdutoDTO> Create(ProdutoCreateDTO produtoDTO)
     {
-        var produto = produtoDTO.ToDomain();
+        var produto = produtoDTO.CreateToDomain();
         var produtoCriado = _unitOfWork.ProdutoRepository.Create(produto);
         await _unitOfWork.CommitAsync();
 
@@ -41,7 +43,7 @@ public class ProdutoService : IProdutoService
     }
 
     public async Task<bool> Remove(int id)
-    { 
+    {
         _unitOfWork.ProdutoRepository.Remove(id);
         var retorno = await _unitOfWork.CommitAsync();
 

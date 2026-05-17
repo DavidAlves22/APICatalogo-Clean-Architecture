@@ -1,4 +1,4 @@
-﻿using Catalogo.Application.DTOs.Autenticacao;
+using Catalogo.Application.DTOs.Autenticacao;
 using Catalogo.Application.Services.Interfaces;
 using Catalogo.Domain.Entities;
 using Catalogo.Domain.Interfaces;
@@ -44,12 +44,11 @@ public class AuthService : IAuthService
 
             var token = _tokenService.GenerateAcessToken(authClaims, _configuration);
             var refreshToken = _tokenService.GenerateRefreshToken();
-            usuario.RefreshToken = refreshToken;
 
             _ = int.TryParse(_configuration["Jwt:RefreshTokenValidityInMinutes"], out int refreshTokenValidityInMinutes);
-            usuario.RefreshTokenExpiryTime = DateTime.UtcNow.AddMinutes(refreshTokenValidityInMinutes);
+            var refreshTokenExpiryTime = DateTime.UtcNow.AddMinutes(refreshTokenValidityInMinutes);
 
-            await _authRepository.UpdateAsync(usuario);
+            await _authRepository.UpdateRefreshTokenAsync(usuario.UserName, refreshToken, refreshTokenExpiryTime);
 
             var retorno = new LoginRetornoDTO
             {
@@ -65,7 +64,6 @@ public class AuthService : IAuthService
 
     public async Task<RetornoDTO> Register(RegisterModel model)
     {
-        var retorno = new RetornoDTO();
         var usuarioExiste = await _authRepository.FindByNameAsync(model.UserName);
 
         if (usuarioExiste is not null)
@@ -73,7 +71,7 @@ public class AuthService : IAuthService
 
         var user = new User(model.UserName, model.Email);
 
-        var resultado = await _authRepository.CreateAsync(user, model.Password);
+        await _authRepository.CreateAsync(user, model.Password);
 
         return new RetornoDTO() { Status = (int)HttpStatusCode.OK, Mensagem = "Usuário criado com sucesso!" };
     }
@@ -102,18 +100,20 @@ public class AuthService : IAuthService
         if (principal is null)
             return new LoginRetornoDTO() { Status = (int)HttpStatusCode.BadRequest, Mensagem = "Access token/refresh inválido!" };
 
-        var user = await _authRepository.FindByNameAsync(principal.Identity!.Name!);
-        if (user is null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
-        {
+        var userName = principal.Identity!.Name!;
+        var user = await _authRepository.FindByNameAsync(userName);
+        if (user is null)
             return new LoginRetornoDTO() { Status = (int)HttpStatusCode.BadRequest, Mensagem = "Token ou usuário não encontrado ou refresh token inválido!" };
-        }
+
+        var tokenInfo = await _authRepository.GetRefreshTokenAsync(userName);
+        if (tokenInfo is null || tokenInfo.Value.RefreshToken != refreshToken || tokenInfo.Value.ExpiryTime <= DateTime.UtcNow)
+            return new LoginRetornoDTO() { Status = (int)HttpStatusCode.BadRequest, Mensagem = "Token ou usuário não encontrado ou refresh token inválido!" };
 
         var novoToken = _tokenService.GenerateAcessToken(principal.Claims.ToList(), _configuration);
         var novoRefreshToken = _tokenService.GenerateRefreshToken();
 
-        user.RefreshToken = novoRefreshToken;
-        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddMinutes(int.Parse(_configuration["Jwt:RefreshTokenValidityInMinutes"]!));
-        await _authRepository.UpdateAsync(user);
+        var novaExpiracao = DateTime.UtcNow.AddMinutes(int.Parse(_configuration["Jwt:RefreshTokenValidityInMinutes"]!));
+        await _authRepository.UpdateRefreshTokenAsync(userName, novoRefreshToken, novaExpiracao);
 
         return new LoginRetornoDTO()
         {
@@ -129,8 +129,7 @@ public class AuthService : IAuthService
         if (user is null)
             return new RetornoDTO() { Status = (int)HttpStatusCode.BadRequest, Mensagem = "Usuário não existe!" };
 
-        user.RefreshToken = null;
-        await _authRepository.UpdateAsync(user);
+        await _authRepository.UpdateRefreshTokenAsync(username, null, DateTime.MinValue);
 
         return new RetornoDTO() { Status = (int)HttpStatusCode.OK, Mensagem = "Sucesso!" };
     }

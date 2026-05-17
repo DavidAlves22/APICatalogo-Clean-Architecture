@@ -1,4 +1,4 @@
-﻿using Catalogo.Application.DTOs;
+﻿using Catalogo.Application.DTOs.Categoria;
 using Catalogo.Application.Services.Interfaces;
 using Catalogo.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -25,9 +25,9 @@ public class CategoriaController : ControllerBase
             var categorias = await _categoriaService.GetCategorias();
             return Ok(categorias);
         }
-        catch
+        catch (Exception ex)
         {
-            throw;
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
         }
     }
 
@@ -49,7 +49,7 @@ public class CategoriaController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Categoria>> Post([FromBody] CategoriaDTO categoriaDTO)
+    public async Task<ActionResult<Categoria>> Post([FromBody] CategoriaCreateDTO categoriaDTO)
     {
         if (categoriaDTO is null)
             return BadRequest("Categoria inválida");

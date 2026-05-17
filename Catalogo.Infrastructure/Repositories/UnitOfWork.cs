@@ -8,7 +8,7 @@ public class UnitOfWork : IUnitOfWork
 {
     private IProdutoRepository _produtoRepository;
     private ICategoriaRepository _categoriaRepository;
-    public ApplicationDbContext _context;
+    private ApplicationDbContext _context;
 
     public UnitOfWork(ApplicationDbContext context)
     {
@@ -19,7 +19,10 @@ public class UnitOfWork : IUnitOfWork
     {
         get
         {
-            return _produtoRepository ?? new ProdutoRepository(_context);
+            if (_produtoRepository == null)
+                _produtoRepository = new ProdutoRepository(_context);
+
+            return _produtoRepository;
         }
     }
 
@@ -27,7 +30,10 @@ public class UnitOfWork : IUnitOfWork
     {
         get
         {
-            return _categoriaRepository ?? new CategoriaRepository(_context);
+            if (_categoriaRepository == null)
+                _categoriaRepository = new CategoriaRepository(_context);
+
+            return _categoriaRepository;
         }
     }
 

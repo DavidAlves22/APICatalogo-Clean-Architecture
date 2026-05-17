@@ -1,4 +1,4 @@
-﻿using Catalogo.Application.DTOs;
+using Catalogo.Application.DTOs.Produto;
 using Catalogo.Domain.Entities;
 
 namespace Catalogo.Application.Mappings
@@ -7,7 +7,12 @@ namespace Catalogo.Application.Mappings
     {
         public static Produto ToDomain(this ProdutoDTO produto)
         {
-            return new Produto(produto.Id, produto.Nome, produto.Descricao, produto.Preco, produto.ImagemUrl, produto.Estoque, produto.CategoriaId);
+            return new Produto(produto.Id, produto.Nome!, produto.Descricao!, produto.Preco, produto.ImagemUrl!, produto.Estoque, produto.CategoriaId);
+        }
+
+        public static Produto CreateToDomain(this ProdutoCreateDTO produto)
+        {
+            return new Produto(0, produto.Nome!, produto.Descricao!, produto.Preco, produto.ImagemUrl!, produto.Estoque, produto.CategoriaId);
         }
 
         public static ProdutoDTO ToDTO(this Produto produto)

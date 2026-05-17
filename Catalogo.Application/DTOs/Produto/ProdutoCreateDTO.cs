@@ -1,13 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Catalogo.Application.DTOs;
+namespace Catalogo.Application.DTOs.Produto;
 
-public class ProdutoDTO
+public class ProdutoCreateDTO
 {
-    public int Id { get; set; }
-
-    [Required(ErrorMessage ="Nome é obrigatório")]
+    [Required(ErrorMessage = "Nome é obrigatório")]
     [MinLength(3)]
     [MaxLength(80)]
     public string? Nome { get; set; }
@@ -28,10 +26,10 @@ public class ProdutoDTO
     public string? ImagemUrl { get; set; }
 
     [Required(ErrorMessage = "Estoque é obrigatório")]
-    [Range(1,99999)]
+    [Range(1, 99999)]
     public int Estoque { get; set; }
 
-    public DateTime DataCadastro { get; set; }
-
+    [Required(ErrorMessage = "CategoriaId é obrigatório")]
+    [Range(1, int.MaxValue, ErrorMessage = "CategoriaId deve ser maior que zero.")]
     public int CategoriaId { get; set; }
 }

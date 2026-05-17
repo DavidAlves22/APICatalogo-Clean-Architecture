@@ -1,10 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
-namespace Catalogo.Application.DTOs;
-public class CategoriaDTO
+namespace Catalogo.Application.DTOs.Categoria;
+
+public class CategoriaCreateDTO
 {
-    public int Id { get; set; }
-
     [Required(ErrorMessage = "Nome é obrigatório")]
     [MinLength(3)]
     [MaxLength(80)]
@@ -15,4 +14,3 @@ public class CategoriaDTO
     [StringLength(300)]
     public string? ImagemUrl { get; set; }
 }
-

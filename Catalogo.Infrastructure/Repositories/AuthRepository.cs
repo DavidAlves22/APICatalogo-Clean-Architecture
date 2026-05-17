@@ -1,4 +1,4 @@
-﻿using Catalogo.Domain.Entities;
+using Catalogo.Domain.Entities;
 using Catalogo.Domain.Interfaces;
 using Catalogo.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -32,17 +32,6 @@ public class AuthRepository : IAuthRepository
     {
         var applicationUser = await _userManager.FindByNameAsync(user.UserName);
         return applicationUser is null ? new List<string>() : await _userManager.GetRolesAsync(applicationUser);
-    }
-
-    public async Task UpdateAsync(User user)
-    {
-        var applicationUser = await _userManager.FindByNameAsync(user.UserName);
-        if (applicationUser is null) return;
-
-        applicationUser.RefreshToken = user.RefreshToken;
-        applicationUser.RefreshTokenExpiryTime = user.RefreshTokenExpiryTime;
-
-        await _userManager.UpdateAsync(applicationUser);
     }
 
     public async Task<User> CreateAsync(User user, string password)
@@ -95,12 +84,27 @@ public class AuthRepository : IAuthRepository
             throw new Exception($"Erro ao criar Role: {string.Join(", ", resultado.Errors.Select(e => e.Description))}");
     }
 
+    public async Task UpdateRefreshTokenAsync(string userName, string? refreshToken, DateTime refreshTokenExpiryTime)
+    {
+        var applicationUser = await _userManager.FindByNameAsync(userName);
+        if (applicationUser is null) return;
+
+        applicationUser.RefreshToken = refreshToken;
+        applicationUser.RefreshTokenExpiryTime = refreshTokenExpiryTime;
+
+        await _userManager.UpdateAsync(applicationUser);
+    }
+
+    public async Task<(string? RefreshToken, DateTime ExpiryTime)?> GetRefreshTokenAsync(string userName)
+    {
+        var applicationUser = await _userManager.FindByNameAsync(userName);
+        if (applicationUser is null) return null;
+
+        return (applicationUser.RefreshToken, applicationUser.RefreshTokenExpiryTime);
+    }
+
     private static User MapToDomain(ApplicationUser appUser)
     {
-        return new User(appUser.UserName!, appUser.Email!)
-        {
-            RefreshToken = appUser.RefreshToken,
-            RefreshTokenExpiryTime = appUser.RefreshTokenExpiryTime
-        };
+        return new User(appUser.UserName!, appUser.Email!);
     }
 }
